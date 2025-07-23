@@ -1,0 +1,19 @@
+ bin/
+ obj/
+ *.suo
+ *.user
+ *.sln.docstates
+ .vs/
+ # NuGet Packages
+ *.nupkg
+ # Runtime data
+ appsettings.Development.json
+ appsettings.Staging.json
+ appsettings.Production.json
+ # Logs
+ logs/
+ # Environment-specific files
+ *.dbmdl
+ # User-specific files
+ *.sdf
+ *.db
