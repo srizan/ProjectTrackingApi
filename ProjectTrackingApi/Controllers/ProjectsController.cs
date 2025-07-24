@@ -23,6 +23,18 @@ namespace ProjectTrackingApi.Controllers
             return projects;
         }
 
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Project>> GetProject(int Id)
+        {
+            var ProjectDetails = await _context.Projects.FindAsync(Id);
+            if (ProjectDetails == null)
+            {
+                return NotFound();
+            }
+
+            return ProjectDetails;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Project>> CreateProject(Project project)
         {
@@ -55,6 +67,15 @@ namespace ProjectTrackingApi.Controllers
             {
                 return BadRequest("Project ID mismatch.");
             }
+            if (project == null)
+            {
+                return BadRequest("Project cannot be null.");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var existingProject = await _context.Projects.FindAsync(Id);
             if (existingProject == null)
             {
