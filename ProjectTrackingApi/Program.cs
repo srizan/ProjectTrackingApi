@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjectTrackingApi
@@ -8,7 +9,15 @@ namespace ProjectTrackingApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            //Add cors policy
+            builder.Services.AddCors(options =>
+            {
+                    options.AddPolicy("AllowSpecificOrigin", policy => {
+                        policy.WithOrigins("http://localhost:5173")
+                                          .AllowAnyMethod()
+                                          .AllowAnyHeader();
+                                      });
+            });
             // Load configuration, including environment-specific files
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                  .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
@@ -32,11 +41,11 @@ namespace ProjectTrackingApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
